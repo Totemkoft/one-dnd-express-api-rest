@@ -19,4 +19,5 @@ export class UserCharacterService {
     public async getCharacters(): Promise<IUserCharacterModel[]> {
         return await userCharacterRepository.findAll();
     };
+
 }
