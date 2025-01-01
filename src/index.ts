@@ -1,13 +1,14 @@
 import dotenv from "dotenv";
 import ServerConfiguration from "./config/server-configuration";
+import Logger from "./config/logger";
 
 dotenv.config();
 
-console.log("Initializing server...");
+Logger.info("Initializing server...");
 
 try {
     const server: ServerConfiguration = new ServerConfiguration();
     server.start();
 } catch (error) {
-    console.error("Error while starting the server:", error);
+    Logger.error("Error while starting the server:", error);
 }

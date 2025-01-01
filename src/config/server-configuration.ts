@@ -3,6 +3,7 @@ import cors from 'cors';
 import DatabaseConnection from './database-config';
 import { RouteInitializer } from './route-initializer';
 import { errorHandlerMiddleware } from '../middleware/error-handler.middleware';
+import Logger from './logger';
 
 class ServerConfiguration {
   private app: Application;
@@ -31,7 +32,7 @@ class ServerConfiguration {
       this.app.use(errorHandlerMiddleware);
 
       this.app.listen(this.port, () => {
-        console.log(`The server is running on port: ${this.port}`);
+        Logger.info(`The server is running on port: ${this.port}`);
       });
 
       this.app.all("*", (req, res) => {
@@ -41,7 +42,7 @@ class ServerConfiguration {
         });
       });
     } catch (error) {
-      console.error('Failed to start the server:', error);
+      Logger.error('Failed to start the server:', error);
       process.exit(1);
     }
   }
