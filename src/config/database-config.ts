@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 class DatabaseConnection {
-  private mongoURI: string = process.env.uri || '';
+  private mongoURI: string = process.env.MONGO_URI || '';
 
   public async connect(): Promise<void> {
     try {
