@@ -1,6 +1,7 @@
 import { IUserCharacter, IUserCharacterModel } from "./model/user-character";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserCharacterService } from "./user-character.service";
+import { validateCreate } from "./validators/user-character-validations"
 
 export class UserCharacterController {
 
@@ -10,12 +11,12 @@ export class UserCharacterController {
      * Obtain all the registered characters 
      * @param res {IUserCharacterModel[]}
      */
-    public async getCharacters(req: Request, res: Response): Promise<void> {
+    public async getCharacters(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const characters: IUserCharacterModel[] = await this.service.getCharacters();
             res.status(200).json(characters);
         } catch (error) {
-            res.status(500).send(error);
+            next(error);
         }
     }
 
@@ -24,13 +25,15 @@ export class UserCharacterController {
      * @param req {IUserCharacter} 
      * @param res {IUserCharacterModel} the created character
      */
-    public async createCharacter(req: Request, res: Response): Promise<void> {
-        const character: IUserCharacter = req.body;
+    public async createCharacter(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            validateCreate(req.body);
+            
+            const character: IUserCharacter = req.body;
             const createdCharacter: IUserCharacterModel = await this.service.createCharacter(character);
-            res.status(201).send(createdCharacter);
-        } catch (error) {
-            res.status(500).send(error);
-        }
+            res.status(201).json(createdCharacter);
+        } catch (error: any) {
+            next(error);
+        };
     }
 }

@@ -52,4 +52,6 @@ export const userCharacterSchema: Schema = new Schema({
     initiative: { type: Number, required: true },
 }, {versionKey: false});
 
+userCharacterSchema.index({ name: 1 });
+
 export const UserCharacter: Model<IUserCharacterModel> = mongoose.model<IUserCharacterModel>('userCharacter', userCharacterSchema);
